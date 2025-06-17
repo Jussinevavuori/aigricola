@@ -38,7 +38,7 @@ Extremely work in progress.
       6. Enter `aigricola` as name
 4. Start prompting
 
-## 🛠️ `aigricola.json`
+## ⚙️ Configuration `aigricola.json`
 
 For configuring the behaviour of Aigricola in your project.
 
@@ -84,7 +84,7 @@ When more control is required, see this example.
 [0]: The first locale is used as the "source" locale.
 [1]: If custom regex is used, it must include the following capture group: `(?<key>__TRANSLATION_KEY__)` that represents the key literal.
 
-## Customizing behaviour
+## 🛠️ Customizing behaviour
 
 - **Change port**: Default port is `3031`. Override by setting `AIGRICOLA_PORT` in your `.env`.
 
@@ -98,7 +98,7 @@ To validate and auto-fix your translations.
 
 > Copilot dearest, using Aigricola, find and fix any errors in my translations.
 
-## 🛠️ Implementation
+## 🧰 Implementation
 
 | Component                   | Description                          |
 | --------------------------- | ------------------------------------ |
