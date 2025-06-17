@@ -1,5 +1,17 @@
 {
 	"name": "aigricola",
+	"version": "1.0.0",
+	"description": "Aigricola: Non-profit open-source tool for localization and configuration management.",
+	"author": "Jussi Nevavuori <https://github.com/jussinevavuori>",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jussinevavuori/aigricola.git"
+	},
+	"bugs": {
+		"url": "https://github.com/jussinevavuori/aigricola/issues"
+	},
+	"homepage": "https://github.com/jussinevavuori/aigricola#readme",
 	"scripts": {
 		"dev": "bun run --hot src/index.ts"
 	},
