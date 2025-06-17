@@ -1,3 +1,5 @@
+#! /usr/bin/env bun
+
 import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { requestId } from "hono/request-id";
@@ -10,4 +12,4 @@ app.use("*", requestId());
 
 app.route("/mcp", mcpRouter);
 
-export default app;
+export default Object.assign(app, { port: process.env.AIGRICOLA_PORT || 3031 });

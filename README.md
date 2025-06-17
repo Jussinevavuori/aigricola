@@ -18,7 +18,75 @@ Extremely work in progress.
 
 ## 🚀 Usage
 
-Clone the repo. Add an `aigricola.json` config file. Run the `aigricola` server on your project (instructions upcoming). Register `aigricola` as a tool for Github Copilot (or any other MCP client). Happy prompting.
+1. Setup: [Install `bun`](https://bun.sh/docs/installation)
+   - Quick install: `curl -fsSL https://bun.sh/install | bash`
+2. Setup Aigricola CLI
+   1. Clone repo: `git clone ...`
+   2. `cd aigricola` to your repo
+   3. Run `bun install`
+   4. Run `bun link`
+   5. Run `bun link aigricola`
+3. Setup your project
+   1. Add `aigricola.json` (instructions below).
+   2. Run the server with `aigricola` in your folder.
+   3. Register Aigricola MCP server to Copilot.
+      1. Select `Configure tools...`
+      2. Select `Add more tools`
+      3. Select `Add MCP server`
+      4. Select `HTTP`
+      5. Enter `http://localhost:3031` as URL
+      6. Enter `aigricola` as name
+4. Start prompting
+
+## 🛠️ `aigricola.json`
+
+For configuring the behaviour of Aigricola in your project.
+
+### Minimal example
+
+Start with this configuration.
+
+```json
+{
+  "locales": ["messages/en-US.json", "messages/fi.json"],
+  "findAndReplace": {
+    "enabled": true
+  }
+}
+```
+
+### Full example
+
+When more control is required, see this example.
+
+```json
+{
+  "locales": ["messages/en-US.json", "messages/fi.json"],
+  "findAndReplace": {
+    "enabled": true,
+    "baseDir": ".",
+    "include": ["**/*.json", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+    "exclude": ["**/node_modules/**", "**/.next/**", "**/dist/**"],
+    "keyRegex": "(t(?:\\.rich)?\\s*\\(\\s*[\"'`])(?<key>__TRANSLATION_KEY__)([\"'`])"
+  }
+}
+```
+
+| Option                    | Description                         | Default                          |
+| ------------------------- | ----------------------------------- | -------------------------------- |
+| `locales`                 | List of locale files [0]            | **Required**                     |
+| `findAndReplace.enabled`  | Enable/disable find & replace       | **Required**                     |
+| `findAndReplace.baseDir`  | Directory to search                 | `.`                              |
+| `findAndReplace.include`  | Glob patterns to include            | All `.ts(x)` and `.js(x)` files. |
+| `findAndReplace.exclude`  | Glob patterns to exclude            | `node_modules`, `.next`, `dist`  |
+| `findAndReplace.keyRegex` | Regex for translation key usage [1] | Smart regex                      |
+
+[0]: The first locale is used as the "source" locale.
+[1]: If custom regex is used, it must include the following capture group: `(?<key>__TRANSLATION_KEY__)` that represents the key literal.
+
+## Customizing behaviour
+
+- **Change port**: Default port is `3031`. Override by setting `AIGRICOLA_PORT` in your `.env`.
 
 ## 💡 Example prompts
 

@@ -26,5 +26,8 @@
 	"devDependencies": {
 		"@types/bun": "latest",
 		"@types/json-stable-stringify": "^1.2.0"
+	},
+	"bin": {
+		"aigricola": "src/index.ts"
 	}
 }

@@ -36,10 +36,7 @@ export const ConfigSchema = z.object({
     /**
      * Glob pattern for files to search in.
      */
-    include: z
-      .string()
-      .array()
-      .default(["**/*.json", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]),
+    include: z.string().array().default(["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]),
 
     /**
      * Glob pattern for files to exclude from search.
