@@ -1,0 +1,10 @@
+{
+	"actions": {
+		"confirm": "Confirm",
+		"create": "Create",
+		"test": "Test"
+	},
+	"hello": "Hello",
+	"waterbottle": "Waterbottle",
+	"welcome": "Welcome"
+}

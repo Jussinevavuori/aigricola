@@ -1,0 +1,10 @@
+{
+	"findAndReplace": {
+		"enabled": true,
+		"baseDir": "."
+	},
+	"locales": [
+		"./messages/en-US.json",
+		"./messages/fi.json"
+	]
+}

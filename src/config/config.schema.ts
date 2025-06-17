@@ -1,0 +1,70 @@
+import { z } from "zod";
+
+/**
+ * Locale file regex. Must be any path to a `${localeRegex}.json` file.
+ */
+const localeFileRegex = /^.+\/([a-z]{2}(?:-[A-Z]{2})?)\.json$/;
+
+/**
+ * Type of config file.
+ */
+export const ConfigSchema = z.object({
+  /**
+   * Relative to the config schema, paths to each locale file. The first one is considered the
+   * source locale.
+   */
+  locales: z
+    .string()
+    .regex(localeFileRegex, "Invalid locale file name.")
+    .array()
+    .nonempty("At least one locale is required."),
+
+  /**
+   * Find + replace
+   */
+  findAndReplace: z.object({
+    /**
+     * Is find and replace enabled?
+     */
+    enabled: z.boolean(),
+
+    /**
+     * Base directory relative to the config file where to search for files.
+     */
+    baseDir: z.string().default("."),
+
+    /**
+     * Glob pattern for files to search in.
+     */
+    include: z
+      .string()
+      .array()
+      .default(["**/*.json", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]),
+
+    /**
+     * Glob pattern for files to exclude from search.
+     */
+    exclude: z.string().array().default(["**/node_modules/**", "**/.next/**", "**/dist/**"]),
+
+    /**
+     * Regex pattern for applied translations.
+     *
+     * Default:
+     * - Assumes `t()` or `t.rich()` calls.
+     * - Allows all quotes.
+     * - Allows any whitespace.
+     *
+     * The regex must include the capture group `(?<key>__TRANSLATION_KEY__)` which is used to
+     * replace the translation key.
+     */
+    keyRegex: z
+      .string()
+      .regex(/(?<key>__TRANSLATION_KEY__)/)
+      .default(`(t(?:\\.rich)?\\s*\\(\\s*["'\`])(?<key>__TRANSLATION_KEY__)(["'\`])`),
+  }),
+});
+
+/**
+ * Type of config file.
+ */
+export type Config = z.infer<typeof ConfigSchema>;

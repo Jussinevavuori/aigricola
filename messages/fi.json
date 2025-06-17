@@ -1,0 +1,10 @@
+{
+  "actions": {
+    "confirm": "Vahvista",
+    "create": "Luo",
+    "test": "Testaa"
+  },
+  "hello": "Hei",
+  "waterbottle": "Vesipullo",
+  "welcome": "Tervetuloa"
+}
