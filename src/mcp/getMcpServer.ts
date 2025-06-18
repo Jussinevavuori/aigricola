@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { register_listLocalizationsTool } from "../tools/listLocalizations.tool";
+import { register_renameLocalizationKeysTool } from "../tools/renameLocalizationKeys.tool";
 import { register_updateLocalizationsTool } from "../tools/updateLocalizations.tool";
 import { register_validateLocalizationsTool } from "../tools/validateLocalizations.tool";
 
@@ -20,6 +21,7 @@ export function getMcpServer() {
   register_listLocalizationsTool(server);
   register_updateLocalizationsTool(server);
   register_validateLocalizationsTool(server);
+  register_renameLocalizationKeysTool(server);
 
   // Added for extra debuggability
   server.server.onerror = console.error.bind(console);
