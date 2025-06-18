@@ -1,3 +1,82 @@
-# deps
+# Node/Bun/TypeScript
 node_modules/
-.env
+bun.lock
+bunfig.toml
+dist/
+build/
+out/
+.next/
+coverage/
+*.log
+*.tsbuildinfo
+*.tgz
+*.env
+.env.*
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+*.rej
+.cache/
+*.local
+*.test-results/
+
+# OS
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.~
+
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test/coverage
+coverage/
+.nyc_output/
+
+# VSCode
+.vscode/
+.history/
+
+# Misc
+*.pid
+*.seed
+*.pid.lock
+*.log
+*.log.*
+
+# Locales/messages
+messages/*.bak
+messages/*.tmp
+
+# Editor backups
+*~
+*.swp
+*.swo
+
+# JetBrains
+.idea/
+*.iml
+
+# Others
+*.sublime-workspace
+*.sublime-project
+
+# Ignore aigricola.json if user wants to keep it local
+#aigricola.json
