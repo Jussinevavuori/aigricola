@@ -1,9 +1,6 @@
 import fg from "fast-glob";
 import { readFile, writeFile } from "fs/promises";
 
-const DEFAULT_EXTENSIONS = ["ts", "tsx", "js", "jsx", "json", "md", "html"];
-const DEFAULT_EXCLUDE_GLOB_PATTERNS = ["node_modules/**", "dist/**", ".next/**"];
-
 /**
  * Utility function to replace text in a string.
  *
@@ -83,20 +80,16 @@ export async function findAndReplaceCodebase(opts: {
   baseDir: string;
   find: string | RegExp;
   replaceWith: string | Record<string, string>;
-  regex?: boolean;
+  include: string[];
+  exclude?: string[];
   dryRun?: boolean;
-  extensions?: string[];
-  excludeGlobPatterns?: string[];
 }) {
-  // Find all files with the specified extensions in the base directory
-  const files = await fg(
-    (opts.extensions ?? DEFAULT_EXTENSIONS).map((ext) => `**/*.${ext}`),
-    {
-      cwd: opts.baseDir,
-      absolute: true,
-      ignore: opts.excludeGlobPatterns ?? DEFAULT_EXCLUDE_GLOB_PATTERNS,
-    }
-  );
+  // Use include / exclude glob patterns to find all files for find & replace
+  const files = await fg(opts.include, {
+    cwd: opts.baseDir,
+    ignore: opts.exclude,
+    absolute: true,
+  });
 
   // Run find and replace on each file
   await Promise.all(

@@ -1,4 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import dedent from "dedent";
 import { z } from "zod";
 import { mutateLocaleFiles } from "../utils/localeFiles";
 
@@ -8,7 +9,7 @@ import { mutateLocaleFiles } from "../utils/localeFiles";
 export function register_updateLocalizationsTool(server: McpServer) {
   server.tool(
     "updateLocalizations",
-    `
+    dedent`
       Update localizations with a list of changes to make. Reference keys with dot notation.
 
 			Example input:

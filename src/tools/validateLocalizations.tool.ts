@@ -1,4 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import dedent from "dedent";
 import { getLocaleFiles } from "../utils/localeFiles";
 
 /**
@@ -7,7 +8,9 @@ import { getLocaleFiles } from "../utils/localeFiles";
 export function register_validateLocalizationsTool(server: McpServer) {
   server.tool(
     "validateLocalizations",
-    "Validate localizations and report all issues",
+    dedent`
+			Validate localizations and report all issues
+		`,
     {},
     async () => {
       const locales = await getLocaleFiles();
