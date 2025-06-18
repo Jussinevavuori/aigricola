@@ -1,4 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import c from "chalk";
 import dedent from "dedent";
 import { z } from "zod";
 import { getConfig } from "../config/getConfig";
@@ -34,7 +35,7 @@ export function register_renameLocalizationKeysTool(server: McpServer) {
             const message = locale.getMessage(oldKey) ?? "";
             locale.setMessage(newKey, message);
             locale.removeMessage(oldKey);
-            console.log(`✅ Renamed ${oldKey} to ${newKey}`);
+            console.log(`✅ Renamed ${c.bold(oldKey)} to ${c.bold(newKey)}`);
           }
 
           // Find and replace

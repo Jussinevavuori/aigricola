@@ -1,4 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import c from "chalk";
 import dedent from "dedent";
 import { z } from "zod";
 import { mutateLocaleFiles } from "../utils/localeFiles";
@@ -6,7 +7,7 @@ import { toolBasicResponse } from "../utils/toolBasicResponse";
 
 export function register_addLocalizationsTool(server: McpServer) {
   server.tool(
-    "updateLocalizations",
+    "addLocalizations",
     dedent`
 		  Add localizations to the locale files. Enables adding multiple keys to multiple locales at once.
 
@@ -33,7 +34,7 @@ export function register_addLocalizationsTool(server: McpServer) {
             const locale = locales.find((_) => _.name === localeName);
             if (locale) {
               locale.setMessage(key, message);
-              console.log(`✅ Add ${key} (${localeName}): ${message}`);
+              console.log(`✅ Add ${c.bold(key)} (${localeName}): ${c.gray(message)}`);
             }
           }
         }

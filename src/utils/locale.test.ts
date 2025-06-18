@@ -103,6 +103,31 @@ describe("getMessages and getFlatMessages", () => {
     expect(locale.getFlatMessages()["greeting"]).toBe("Hello");
     expect(locale.getFlatMessages()["user.name"]).toBe("Alice");
   });
+
+  it("resolves overlaps correctly for empty or whitespace messages", () => {
+    const messages = {};
+    const locale = createLocale(messages);
+    locale.setMessage("user", "");
+    locale.setMessage("user.name", "Alice"); // Should overwrite empty user string to namespace
+    locale.setMessage("user.details", "  \t ");
+    locale.setMessage("user.details.age", "30"); // Should overwrite whitespace details to namespace
+    expect(locale.getMessages()).toEqual({
+      user: {
+        name: "Alice",
+        details: {
+          age: "30",
+        },
+      },
+    });
+  });
+
+  it("throws on overlaps for non-empty message", () => {
+    const messages = {};
+    const locale = createLocale(messages);
+    locale.setMessage("user", "existing-value");
+    locale.setMessage("user.name", "Alice"); // Fails to overwrite
+    expect(() => locale.getMessages()).toThrowError();
+  });
 });
 
 describe("save", () => {

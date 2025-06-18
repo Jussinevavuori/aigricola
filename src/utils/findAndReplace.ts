@@ -1,3 +1,4 @@
+import c from "chalk";
 import fg from "fast-glob";
 import { readFile, writeFile } from "fs/promises";
 
@@ -68,8 +69,7 @@ export async function findAndReplaceFile(opts: {
   });
 
   if (original !== replaced) {
-    const label = opts.dryRun ? "Found and Replaced (Dry)" : "Found and Replaced";
-    console.log(`  🔍 ${label}: ${opts.fileName}`);
+    console.log(`  🔍 ${c.gray(opts.fileName)}`);
     if (!opts.dryRun) await writeFile(opts.fileName, replaced);
   }
 }

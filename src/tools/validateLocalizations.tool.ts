@@ -1,4 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import c from "chalk";
 import dedent from "dedent";
 import { getLocaleFiles } from "../utils/localeFiles";
 import { toolBasicResponse } from "../utils/toolBasicResponse";
@@ -50,11 +51,11 @@ export function register_validateLocalizationsTool(server: McpServer) {
       // Log issues
       console.log(
         issues.length === 0
-          ? "✅ All localizations OK, no issues found."
-          : `🚨 Found ${issues.length} issues`
+          ? c.green("✅ All localizations OK, no issues found.")
+          : c.red(`🚨 Found ${issues.length} issues`)
       );
       for (const issue of issues) {
-        console.log(`  - ${issue}`);
+        console.log(c.gray(`  - ${issue}`));
       }
 
       // Report issues

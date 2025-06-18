@@ -41,7 +41,8 @@ export async function mutateLocaleFiles<T>(
   const result = await fn(locales, config);
 
   // Save all locale files with updated contents. Ensure to sort keys for consistency.
-  await Promise.all(locales.map(async (locale) => await locale.save()));
+  const results = await Promise.allSettled(locales.map(async (locale) => await locale.save()));
+  console.log({ results });
 
   return result;
 }

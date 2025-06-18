@@ -1,4 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import c from "chalk";
 import dedent from "dedent";
 import { z } from "zod";
 import { mutateLocaleFiles } from "../utils/localeFiles";
@@ -33,7 +34,7 @@ export function register_updateLocalizationsTool(server: McpServer) {
             const locale = locales.find((_) => _.name === localeName);
             if (locale) {
               locale.setMessage(key, message);
-              console.log(`✅ Update ${key} (${localeName}): ${message}`);
+              console.log(`✅ Update ${c.bold(key)} (${localeName}): ${c.gray(message)}`);
             }
           }
         }

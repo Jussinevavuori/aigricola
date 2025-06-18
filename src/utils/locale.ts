@@ -72,14 +72,12 @@ export class Locale {
    */
   async save() {
     const messages = Locale.inflate(this.data);
-    const data = JsonStableStringify(messages, {
+    const fileContents = JsonStableStringify(messages, {
       space: 2,
-      cmp(a, b) {
-        return a.key.localeCompare(b.key);
-      },
+      cmp: (a, b) => a.key.localeCompare(b.key), // Stable-sort keys alphabetically
     });
-    if (!data) throw new Error("Failed to stringify messages");
-    await this.file.write(data);
+    if (!fileContents) throw new Error("Failed to stringify messages");
+    await this.file.write(fileContents);
   }
 
   /**
@@ -130,6 +128,8 @@ export class Locale {
    */
   static deflate(messages: MessagesObject): Record<string, string> {
     const result: Record<string, string> = {};
+
+    // Recursive deflation function
     function walk(obj: MessageValue, path: string[] = []) {
       if (typeof obj === "string") {
         result[path.join(".")] = obj;
@@ -141,8 +141,12 @@ export class Locale {
         }
       }
     }
+
+    // Start recursion
     walk(messages);
-    return result;
+
+    // Return shallow copy of the flattened result
+    return { ...result };
   }
 
   /**
@@ -150,22 +154,46 @@ export class Locale {
    * Does not use MessageTools.setValue.
    */
   static inflate(flat: Record<string, string>): MessagesObject {
+    // Setup result object for inflation
     const result: MessagesObject = {};
+
+    // Inflate each key
     for (const key in flat) {
-      const parts = key.split(".");
+      // Current namespace object
       let current: any = result;
+
+      // For all namespaces (all but last part of key), traverse
+      // to namespace and create namespaces if they don't exist.
+      const parts = key.split(".");
       for (let i = 0; i < parts.length - 1; i++) {
         const part = parts[i];
         const nextPart = parts[i + 1];
         const isArrayIndex = !isNaN(Number(nextPart));
         if (!(part in current)) {
           current[part] = isArrayIndex ? [] : {};
+        } else if (typeof current[part] === "string") {
+          // If the current value is a string, only overwrite if it's empty or whitespace
+          if (typeof current[part] === "string" && current[part].trim() === "") {
+            current[part] = isArrayIndex ? [] : {};
+          } else {
+            throw new Error(
+              `Cannot inflate key "${key}": "${parts
+                .slice(0, i + 1)
+                .join(".")}" is already a string value ("${
+                current[part]
+              }") and cannot be overwritten with an object or array.`
+            );
+          }
         }
         current = current[part];
       }
+
+      // Add key to resolved namespace
       const lastPart = parts[parts.length - 1];
       current[lastPart] = flat[key];
     }
+
+    // Return inflated object
     return result;
   }
 }

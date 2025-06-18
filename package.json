@@ -17,6 +17,7 @@
 	},
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.12.3",
+		"chalk": "^5.4.1",
 		"dedent": "^1.6.0",
 		"fast-glob": "^3.3.3",
 		"fetch-to-node": "^2.1.0",
