@@ -2,9 +2,6 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import dedent from "dedent";
 import { getLocaleFiles } from "../utils/localeFiles";
 
-/**
- * Validate localizations and report all issues.
- */
 export function register_validateLocalizationsTool(server: McpServer) {
   server.tool(
     "validateLocalizations",

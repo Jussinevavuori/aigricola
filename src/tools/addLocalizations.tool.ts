@@ -3,11 +3,11 @@ import dedent from "dedent";
 import { z } from "zod";
 import { mutateLocaleFiles } from "../utils/localeFiles";
 
-export function register_updateLocalizationsTool(server: McpServer) {
+export function register_addLocalizationsTool(server: McpServer) {
   server.tool(
     "updateLocalizations",
     dedent`
-		  Update localizations to the locale files. Enables updating multiple keys to multiple locales at once.
+		  Add localizations to the locale files. Enables adding multiple keys to multiple locales at once.
 
       {
 				"keys": {

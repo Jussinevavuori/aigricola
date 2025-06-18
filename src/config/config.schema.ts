@@ -41,7 +41,14 @@ export const ConfigSchema = z.object({
     /**
      * Glob pattern for files to exclude from search.
      */
-    exclude: z.string().array().default(["**/node_modules/**", "**/.next/**", "**/dist/**"]),
+    exclude: z.string().array().default([
+      // Default excludes for common directories
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/public/**",
+    ]),
 
     /**
      * Regex pattern for applied translations.

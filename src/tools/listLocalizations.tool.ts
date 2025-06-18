@@ -2,9 +2,6 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import dedent from "dedent";
 import { getLocaleFiles } from "../utils/localeFiles";
 
-/**
- * Enable finding all available locales and messages
- */
 export function register_listLocalizationsTool(server: McpServer) {
   server.tool(
     "listLocalizations",

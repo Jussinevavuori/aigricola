@@ -5,9 +5,6 @@ import { getConfig } from "../config/getConfig";
 import { findAndReplaceCodebase } from "../utils/findAndReplace";
 import { mutateLocaleFiles } from "../utils/localeFiles";
 
-/**
- * Enable updating localizations with a list of actions.
- */
 export function register_renameLocalizationKeysTool(server: McpServer) {
   server.tool(
     "renameLocalizationKeys",
@@ -39,15 +36,13 @@ export function register_renameLocalizationKeysTool(server: McpServer) {
           }
 
           // Find and replace
-          if (config.findAndReplace.enabled) {
+          const fnr = config.findAndReplace;
+          if (fnr.enabled) {
             findAndReplaceCodebase({
-              baseDir: config.findAndReplace.baseDir,
-              exclude: config.findAndReplace.exclude,
-              include: config.findAndReplace.include,
-              dryRun: true,
-              find: new RegExp(
-                config.findAndReplace.keyRegex.replace("__TRANSLATION_KEY__", oldKey)
-              ),
+              baseDir: fnr.baseDir,
+              exclude: fnr.exclude,
+              include: fnr.include,
+              find: new RegExp(fnr.keyRegex.replace("__TRANSLATION_KEY__", oldKey)),
               replaceWith: { key: newKey },
             });
           }
