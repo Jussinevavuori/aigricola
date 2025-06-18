@@ -4,6 +4,7 @@ import { z } from "zod";
 import { getConfig } from "../config/getConfig";
 import { findAndReplaceCodebase } from "../utils/findAndReplace";
 import { mutateLocaleFiles } from "../utils/localeFiles";
+import { toolBasicResponse } from "../utils/toolBasicResponse";
 
 export function register_renameLocalizationKeysTool(server: McpServer) {
   server.tool(
@@ -33,12 +34,13 @@ export function register_renameLocalizationKeysTool(server: McpServer) {
             const message = locale.getMessage(oldKey) ?? "";
             locale.setMessage(newKey, message);
             locale.removeMessage(oldKey);
+            console.log(`✅ Renamed ${oldKey} to ${newKey}`);
           }
 
           // Find and replace
           const fnr = config.findAndReplace;
           if (fnr.enabled) {
-            findAndReplaceCodebase({
+            await findAndReplaceCodebase({
               baseDir: fnr.baseDir,
               exclude: fnr.exclude,
               include: fnr.include,
@@ -49,7 +51,7 @@ export function register_renameLocalizationKeysTool(server: McpServer) {
         }
       });
 
-      return { content: [{ type: "text", text: "OK" }] };
+      return toolBasicResponse("Succesfully renamed localizations");
     }
   );
 }

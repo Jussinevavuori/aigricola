@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import dedent from "dedent";
 import { z } from "zod";
 import { mutateLocaleFiles } from "../utils/localeFiles";
+import { toolBasicResponse } from "../utils/toolBasicResponse";
 
 export function register_addLocalizationsTool(server: McpServer) {
   server.tool(
@@ -30,12 +31,15 @@ export function register_addLocalizationsTool(server: McpServer) {
         for (const [key, values] of Object.entries(keys)) {
           for (const [localeName, message] of Object.entries(values)) {
             const locale = locales.find((_) => _.name === localeName);
-            locale?.setMessage(key, message);
+            if (locale) {
+              locale.setMessage(key, message);
+              console.log(`✅ Add ${key} (${localeName}): ${message}`);
+            }
           }
         }
       });
 
-      return { content: [{ type: "text", text: "OK" }] };
+      return toolBasicResponse("Succesfully added localizations");
     }
   );
 }

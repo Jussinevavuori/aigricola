@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import dedent from "dedent";
 import { z } from "zod";
 import { mutateLocaleFiles } from "../utils/localeFiles";
+import { toolBasicResponse } from "../utils/toolBasicResponse";
 
 export function register_removeLocalizationsTool(server: McpServer) {
   server.tool(
@@ -25,7 +26,7 @@ export function register_removeLocalizationsTool(server: McpServer) {
         }
       });
 
-      return { content: [{ type: "text", text: "OK" }] };
+      return toolBasicResponse("Succesfully removed localizations");
     }
   );
 }

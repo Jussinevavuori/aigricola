@@ -68,7 +68,8 @@ export async function findAndReplaceFile(opts: {
   });
 
   if (original !== replaced) {
-    console.log(`${opts.dryRun ? "[DRY-RUN] " : ""}Updated: ${opts.fileName}`);
+    const label = opts.dryRun ? "Found and Replaced (Dry)" : "Found and Replaced";
+    console.log(`  🔍 ${label}: ${opts.fileName}`);
     if (!opts.dryRun) await writeFile(opts.fileName, replaced);
   }
 }
