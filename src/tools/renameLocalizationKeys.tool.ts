@@ -4,6 +4,7 @@ import dedent from "dedent";
 import { z } from "zod";
 import { getConfig } from "../config/getConfig";
 import { findAndReplaceCodebase } from "../utils/findAndReplace";
+import { keyMatchesPattern } from "../utils/keyMatchesPattern";
 import { mutateLocaleFiles } from "../utils/localeFiles";
 import { toolBasicResponse } from "../utils/toolBasicResponse";
 
@@ -79,20 +80,4 @@ export function register_renameLocalizationKeysTool(server: McpServer) {
       return toolBasicResponse("Succesfully renamed localizations");
     }
   );
-}
-
-/**
- * Ensure matches pattern by full namespaces. No partial namespaces, e.g.
- * `attachments.uploading` does not match pattern `attachments.upload`.
- */
-function keyMatchesPattern(pattern: string, key: string) {
-  const patternNss = pattern.split(".").filter(Boolean);
-  const keyNss = key.split(".").filter(Boolean);
-
-  let matches = true;
-  for (let i = 0; i < patternNss.length; i++) {
-    matches &&= patternNss[i] === keyNss[i];
-  }
-
-  return matches;
 }
