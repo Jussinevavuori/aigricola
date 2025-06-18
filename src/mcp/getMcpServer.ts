@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import dedent from "dedent";
 import { register_addLocalizationsTool } from "../tools/addLocalizations.tool";
+import { register_copyLocalizationsTool } from "../tools/copyLocalizations.tool";
 import { register_listLocalizationsTool } from "../tools/listLocalizations.tool";
 import { register_removeLocalizationsTool } from "../tools/removeLocalizations.tool";
 import { register_renameLocalizationKeysTool } from "../tools/renameLocalizationKeys.tool";
@@ -32,6 +33,7 @@ export function getMcpServer() {
   // Register all tools to the server
   register_addLocalizationsTool(server);
   register_listLocalizationsTool(server);
+  register_copyLocalizationsTool(server);
   register_updateLocalizationsTool(server);
   register_removeLocalizationsTool(server);
   register_validateLocalizationsTool(server);
