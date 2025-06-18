@@ -18,6 +18,8 @@ Extremely work in progress.
 
 ## 🚀 Usage
 
+**🚨 NOTE: You should always `git commit` before running any changes with `aigricola`. I take no responsibility for any issues or lost work caused by using a work-in-progress OSS tool.**
+
 1. Setup: [Install `bun`](https://bun.sh/docs/installation)
    - Quick install: `curl -fsSL https://bun.sh/install | bash`
 2. Setup Aigricola CLI
