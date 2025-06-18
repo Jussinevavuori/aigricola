@@ -22,10 +22,9 @@ export function getMcpServer() {
       capabilities: { logging: {} },
       instructions: dedent`
 				This server provides tools for managing localizations, translations and messages in
-				your project. Refer to all nested keys using dot notation, e.g. "actions.move" or
-				"say-hello". When renaming keys, prefer the "renameLocalizationKeys" tool. Otherwise
-				you are free to update the translations using the "addLocalizations", "removeLocalizations"
-				and "updateLocalizations" tools.
+				your project.
+				
+				Refer to all nested keys using dot notation, e.g. "actions.move" or "say-hello".
 			`,
     }
   );
