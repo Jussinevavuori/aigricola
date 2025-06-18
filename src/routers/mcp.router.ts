@@ -24,15 +24,11 @@ mcpRouter.post("/", async (c) => {
     transport.onerror = console.error.bind(console);
 
     // Initialize server and connect to transport
-    console.log("🟢 1");
     const server = getMcpServer();
-    console.log("🟢 2");
     await server.connect(transport);
-    console.log("🟢 3");
 
     // Handle the request using the transport
     await transport.handleRequest(req, res, await c.req.json());
-    console.log("🟢 4");
 
     // Close transport and server on response close
     res.on("close", () => {
@@ -43,7 +39,6 @@ mcpRouter.post("/", async (c) => {
     // Return as correctly shaped response
     return toFetchResponse(res);
   } catch (e) {
-    console.log("🚨 5");
     console.error(e);
     return c.json(JsonRpc2Error(-32603, "Internal server error"), { status: 500 });
   }

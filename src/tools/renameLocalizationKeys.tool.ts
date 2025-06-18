@@ -35,28 +35,28 @@ export function register_renameLocalizationKeysTool(server: McpServer) {
       const appliedMappings: Record<string, string> = {};
 
       await mutateLocaleFiles(async (locales) => {
-        for (const [oldKeyStart, newKeyStart] of Object.entries(mappings)) {
+        for (const [oldPattern, newPattern] of Object.entries(mappings)) {
           // Move key in all locales
           for (const locale of locales) {
             // Find all matching keys that start with "oldKey"
             const keysToUpdate = Object.keys(locale.getFlatMessages()).filter((key) =>
-              key.startsWith(oldKeyStart)
+              keyMatchesPattern(key, oldPattern)
             );
 
             // Warn if no matched keys
             if (!keysToUpdate.length) {
-              console.warn(`⚠️ No keys match ${c.bold(oldKeyStart)} in ${c.bold(locale.name)}`);
+              console.warn(`⚠️ No keys match ${c.bold(oldPattern)} in ${c.bold(locale.name)}`);
               continue;
             }
 
             // Rename each matched key
             for (const oldKey of keysToUpdate) {
-              const newKey = oldKey.replace(oldKeyStart, newKeyStart);
+              const newKey = oldKey.replace(oldPattern, newPattern);
               const message = locale.getMessage(oldKey) ?? "";
               locale.setMessage(newKey, message);
               locale.removeMessage(oldKey);
               appliedMappings[oldKey] = newKey; // Track the mapping for find and replace
-              console.log(`✅ Renamed ${c.bold(oldKey)} to ${c.bold(newKey)}`);
+              console.log(`✅ Renamed ${c.bold(oldKey)} to ${c.bold(newKey)} (${locale.name})`);
             }
           }
         }
@@ -65,7 +65,7 @@ export function register_renameLocalizationKeysTool(server: McpServer) {
       // Find and replace all applied matches if enabled
       const fnr = config.findAndReplace;
       if (fnr.enabled) {
-        Object.entries(appliedMappings).forEach(async ([oldKey, newKey]) => {
+        for (const [oldKey, newKey] of Object.entries(appliedMappings)) {
           await findAndReplaceCodebase({
             baseDir: fnr.baseDir,
             exclude: fnr.exclude,
@@ -73,10 +73,26 @@ export function register_renameLocalizationKeysTool(server: McpServer) {
             find: new RegExp(fnr.keyRegex.replace("__TRANSLATION_KEY__", oldKey)),
             replaceWith: { key: newKey },
           });
-        });
+        }
       }
 
       return toolBasicResponse("Succesfully renamed localizations");
     }
   );
+}
+
+/**
+ * Ensure matches pattern by full namespaces. No partial namespaces, e.g.
+ * `attachments.uploading` does not match pattern `attachments.upload`.
+ */
+function keyMatchesPattern(pattern: string, key: string) {
+  const patternNss = pattern.split(".").filter(Boolean);
+  const keyNss = key.split(".").filter(Boolean);
+
+  let matches = true;
+  for (let i = 0; i < patternNss.length; i++) {
+    matches &&= patternNss[i] === keyNss[i];
+  }
+
+  return matches;
 }
