@@ -3,6 +3,7 @@ import dedent from "dedent";
 import { register_addLocalizationsTool } from "../tools/addLocalizations.tool";
 import { register_copyLocalizationsTool } from "../tools/copyLocalizations.tool";
 import { register_findDuplicateValuesTool } from "../tools/findDuplicateValues.tool";
+import { register_listLocalesTools } from "../tools/listLocales.tool";
 import { register_listLocalizationsTool } from "../tools/listLocalizations.tool";
 import { register_removeLocalizationsTool } from "../tools/removeLocalizations.tool";
 import { register_renameLocalizationKeysTool } from "../tools/renameLocalizationKeys.tool";
@@ -31,6 +32,7 @@ export function getMcpServer() {
   );
 
   // Register all tools to the server
+  register_listLocalesTools(server);
   register_addLocalizationsTool(server);
   register_listLocalizationsTool(server);
   register_copyLocalizationsTool(server);

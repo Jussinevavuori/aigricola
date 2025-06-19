@@ -11,6 +11,9 @@ export function register_updateLocalizationsTool(server: McpServer) {
     dedent`
 		  Update localizations to the locale files. Enables updating multiple keys to multiple locales at once.
 
+			Note: ALWAYS get the list of available locales first from "listLocales" tool. Do not assume
+			the locales from the example input.
+
       {
 				"keys": {
 					"instructions.title": {

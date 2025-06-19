@@ -16,7 +16,14 @@ export async function getLocaleFile(filePath: string) {
   const index = config.locales.indexOf(filePath);
 
   // Initialize a new locale
-  return new Locale({ file, messages, name, index, filePath });
+  return new Locale({
+    file,
+    messages,
+    name,
+    index,
+    filePath,
+    sortKeys: config.sortKeys,
+  });
 }
 
 /**

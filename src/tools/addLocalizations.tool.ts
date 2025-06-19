@@ -11,6 +11,9 @@ export function register_addLocalizationsTool(server: McpServer) {
     dedent`
 		  Add localizations to the locale files. Enables adding multiple keys to multiple locales at once.
 
+			Note: ALWAYS get the list of available locales first from "listLocales" tool. Do not assume
+			the locales from the example input.
+
       {
 				"keys": {
 					"instructions.title": {
