@@ -27,11 +27,14 @@ export const ConfigSchema = z.object({
       /**
        * Key sorting
        *
-       * - alphabetically:             Keys are always sorted alphabetically.
-       * - preserve-order-and-append:  The initial order of the keys is preserved, and new keys are
-       *                               appended at the end of each namespace.
+       * - alphabetically:               Keys are always sorted alphabetically.
+       * - alphabetically-objects-first: Keys are sorted alphabetically, but objects are sorted first.
+       * - preserve-order-and-append:    The initial order of the keys is preserved, and new keys are
+       *                                 appended at the end of each namespace.
        */
-      sort: z.enum(["alphabetically", "preserve-order-and-append"]).default("alphabetically"),
+      sort: z
+        .enum(["alphabetically", "alphabetically-objects-first", "preserve-order-and-append"])
+        .default("alphabetically"),
 
       /**
        * Indent for formatting JSON files.

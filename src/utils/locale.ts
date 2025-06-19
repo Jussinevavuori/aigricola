@@ -110,6 +110,13 @@ export class Locale {
       case "alphabetically": {
         return a.key.localeCompare(b.key);
       }
+      case "alphabetically-objects-first": {
+        const aIsObject = typeof a.value === "object" && !!a.value;
+        const bIsObject = typeof b.value === "object" && !!b.value;
+        if (aIsObject && !bIsObject) return -1;
+        if (!aIsObject && bIsObject) return 1;
+        return a.key.localeCompare(b.key);
+      }
       case "preserve-order-and-append": {
         // Get initial ordering of paths
         const paths = this.getInitialPathsOrdering();

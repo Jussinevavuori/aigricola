@@ -307,3 +307,77 @@ describe("save with different indent settings", () => {
     );
   });
 });
+
+describe("save with sort: 'alphabetically-objects-first'", () => {
+  it("puts objects before strings and sorts alphabetically", async () => {
+    const messages: MessagesObject = {
+      z: "last string",
+      a: "first string",
+      m: { x: "object value" },
+      b: { y: "another object" },
+      c: "middle string",
+    };
+    const writeMock = jest.fn(async () => void 0);
+    const locale = new Locale({
+      file: { write: writeMock },
+      messages,
+      name: "en-US",
+      index: 0,
+      filePath: "en-US.json",
+      format: { sort: "alphabetically-objects-first", indent: "2" },
+    });
+    await locale.save();
+    expect(writeMock).toHaveBeenCalledWith(
+      `{
+  "b": {
+    "y": "another object"
+  },
+  "m": {
+    "x": "object value"
+  },
+  "a": "first string",
+  "c": "middle string",
+  "z": "last string"
+}`
+    );
+  });
+
+  it("sorts nested objects with objects first", async () => {
+    const messages: MessagesObject = {
+      root: {
+        z: "last string",
+        a: "first string",
+        m: { x: "object value" },
+        b: { y: "another object" },
+        c: "middle string",
+      },
+      alpha: "top string",
+    };
+    const writeMock = jest.fn(async () => void 0);
+    const locale = new Locale({
+      file: { write: writeMock },
+      messages,
+      name: "en-US",
+      index: 0,
+      filePath: "en-US.json",
+      format: { sort: "alphabetically-objects-first", indent: "2" },
+    });
+    await locale.save();
+    expect(writeMock).toHaveBeenCalledWith(
+      `{
+  "root": {
+    "b": {
+      "y": "another object"
+    },
+    "m": {
+      "x": "object value"
+    },
+    "a": "first string",
+    "c": "middle string",
+    "z": "last string"
+  },
+  "alpha": "top string"
+}`
+    );
+  });
+});

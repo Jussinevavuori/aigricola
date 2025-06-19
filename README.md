@@ -78,16 +78,16 @@ When more control is required, see this example.
 }
 ```
 
-| Option                    | Description                           | Default                                                   |
-| ------------------------- | ------------------------------------- | --------------------------------------------------------- |
-| `locales`                 | List of locale files [0]              | **Required**                                              |
-| `format.sort`             | How to sort keys in translation files | `alphabetically` (default) or `preserve-order-and-append` |
-| `format.indent`           | JSON formatting indent option         | `2` (default), `4`, or `tab`                              |
-| `findAndReplace.enabled`  | Enable/disable find & replace         | **Required**                                              |
-| `findAndReplace.baseDir`  | Directory to search                   | `.`                                                       |
-| `findAndReplace.include`  | Glob patterns to include              | All `.ts(x)` and `.js(x)` files.                          |
-| `findAndReplace.exclude`  | Glob patterns to exclude              | `node_modules`, `.next`, `dist`                           |
-| `findAndReplace.keyRegex` | Regex for translation key usage [1]   | Smart regex                                               |
+| Option                    | Description                           | Default                                                                                   |
+| ------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `locales`                 | List of locale files [0]              | **Required**                                                                              |
+| `format.sort`             | How to sort keys in translation files | `alphabetically` (default), `alphabetically-objects-first` or `preserve-order-and-append` |
+| `format.indent`           | JSON formatting indent option         | `2` (default), `4`, or `tab`                                                              |
+| `findAndReplace.enabled`  | Enable/disable find & replace         | **Required**                                                                              |
+| `findAndReplace.baseDir`  | Directory to search                   | `.`                                                                                       |
+| `findAndReplace.include`  | Glob patterns to include              | All `.ts(x)` and `.js(x)` files.                                                          |
+| `findAndReplace.exclude`  | Glob patterns to exclude              | `node_modules`, `.next`, `dist`                                                           |
+| `findAndReplace.keyRegex` | Regex for translation key usage [1]   | Smart regex                                                                               |
 
 [0]: The first locale is used as the "source" locale.
 [1]: If custom regex is used, it must include the following capture group: `(?<key>__TRANSLATION_KEY__)` that represents the key literal.
