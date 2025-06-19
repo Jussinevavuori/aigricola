@@ -1,4 +1,5 @@
-import JsonStableStringify from "json-stable-stringify";
+import { Config } from "../config/config.schema";
+import { JsonStringify } from "./JsonStringify";
 
 /**
  * File interface to implement
@@ -48,6 +49,16 @@ export class Locale {
   private data: Record<string, string>;
 
   /**
+   * The inflated messages object. Kept as reference for sorting.
+   */
+  private initialData: MessagesObject;
+
+  /**
+   * Key sorting algorithm.
+   */
+  private sortKeys: Config["sortKeys"];
+
+  /**
    * Constructors
    */
   constructor(options: {
@@ -56,15 +67,64 @@ export class Locale {
     name: string;
     index: number;
     filePath: string;
+    sortKeys: Config["sortKeys"];
   }) {
     // Save data
     this.file = options.file;
     this.name = options.name;
     this.index = options.index;
     this.filePath = options.filePath;
+    this.sortKeys = options.sortKeys;
 
     // Deflate messages into a flat object
     this.data = Locale.deflate(options.messages);
+
+    // Preserve initial messages object for reference
+    this.initialData = options.messages;
+  }
+
+  /**
+   * Construct initial ordering of keys.
+   */
+  private getInitialPathsOrdering(obj: MessageValue = this.initialData, path = ""): string[] {
+    const paths: string[] = [];
+
+    if (path) paths.push(path);
+
+    if (typeof obj === "object" && obj) {
+      for (const key of Object.keys(obj)) {
+        const nextPath = path ? `${path}.${key}` : key;
+        const value = Array.isArray(obj) ? obj[Number(key)] : obj[key];
+        paths.push(...this.getInitialPathsOrdering(value, nextPath));
+      }
+    }
+
+    return paths;
+  }
+
+  /**
+   * Implement key sorting algorithm
+   */
+  private compareKeys<T extends { key: string; path: string; value: unknown }>(a: T, b: T): number {
+    switch (this.sortKeys) {
+      case "alphabetically": {
+        return a.key.localeCompare(b.key);
+      }
+      case "preserve-order-and-append": {
+        // Get initial ordering of paths
+        const paths = this.getInitialPathsOrdering();
+
+        // Get index or infinity for appending
+        const aIndex = paths.indexOf(a.path) === -1 ? Infinity : paths.indexOf(a.path);
+        const bIndex = paths.indexOf(b.path) === -1 ? Infinity : paths.indexOf(b.path);
+
+        // When both are being appended, append alphabetically
+        if (aIndex === bIndex) return a.path.localeCompare(b.path);
+
+        // Sort by initial ordering
+        return aIndex - bIndex;
+      }
+    }
   }
 
   /**
@@ -72,10 +132,7 @@ export class Locale {
    */
   async save() {
     const messages = Locale.inflate(this.data);
-    const fileContents = JsonStableStringify(messages, {
-      space: 2,
-      cmp: (a, b) => a.key.localeCompare(b.key), // Stable-sort keys alphabetically
-    });
+    const fileContents = JsonStringify(messages, { space: 2, cmp: this.compareKeys.bind(this) });
     if (!fileContents) throw new Error("Failed to stringify messages");
     await this.file.write(fileContents);
   }

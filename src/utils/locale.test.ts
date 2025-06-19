@@ -9,6 +9,7 @@ function createLocale(messages: MessagesObject) {
     name: "en-US",
     index: 0,
     filePath: "en-US.json",
+    sortKeys: "alphabetically",
   });
 }
 
@@ -131,7 +132,7 @@ describe("getMessages and getFlatMessages", () => {
 });
 
 describe("save", () => {
-  it("calls the file.write method with the correct data", async () => {
+  it("calls the file.write method", async () => {
     const messages = {
       greeting: "Hello",
       user: {
@@ -146,6 +147,28 @@ describe("save", () => {
       name: "en-US",
       index: 0,
       filePath: "en-US.json",
+      sortKeys: "alphabetically",
+    });
+    await locale.save();
+    expect(writeMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("correctly implements sortKeys=alphabetically", async () => {
+    const messages = {
+      greeting: "Hello",
+      user: {
+        name: "Alice",
+        friends: ["Bob", { name: "Charlie", age: "20" }],
+      },
+    };
+    const writeMock = jest.fn(async () => void 0);
+    const locale = new Locale({
+      file: { write: writeMock },
+      messages,
+      name: "en-US",
+      index: 0,
+      filePath: "en-US.json",
+      sortKeys: "alphabetically",
     });
     await locale.save();
     expect(writeMock).toHaveBeenCalledTimes(1);
@@ -165,6 +188,50 @@ describe("save", () => {
 }
     `.trim();
 
+    expect(writeMock).toHaveBeenCalledWith(expectedJsonString);
+  });
+
+  it("correctly implements sortKeys=preserver-order-and-append", async () => {
+    const messages = {
+      user: {
+        name: "Alice",
+        friends: ["Bob", { name: "Charlie", age: "20" }],
+      },
+      greeting: "Hello",
+    };
+    const writeMock = jest.fn(async () => void 0);
+    const locale = new Locale({
+      file: { write: writeMock },
+      messages,
+      name: "en-US",
+      index: 0,
+      filePath: "en-US.json",
+      sortKeys: "preserve-order-and-append",
+    });
+    locale.setMessage("aaa", "AAA");
+    locale.setMessage("user.name", "Charlie");
+    locale.setMessage("user.friends.2.age", "21");
+    await locale.save();
+    expect(writeMock).toHaveBeenCalledTimes(1);
+    const expectedJsonString = `
+{
+  "user": {
+    "name": "Charlie",
+    "friends": [
+      "Bob",
+      {
+        "name": "Charlie",
+        "age": "20"
+      },
+      {
+        "age": "21"
+      }
+    ]
+  },
+  "greeting": "Hello",
+  "aaa": "AAA"
+}
+    `.trim();
     expect(writeMock).toHaveBeenCalledWith(expectedJsonString);
   });
 });

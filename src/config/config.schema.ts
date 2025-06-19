@@ -20,6 +20,15 @@ export const ConfigSchema = z.object({
     .nonempty("At least one locale is required."),
 
   /**
+   * Key sorting
+   *
+   * - alphabetically:             Keys are always sorted alphabetically.
+   * - preserve-order-and-append:  The initial order of the keys is preserved, and new keys are
+   *                               appended at the end of each namespace.
+   */
+  sortKeys: z.enum(["alphabetically", "preserve-order-and-append"]).default("alphabetically"),
+
+  /**
    * Find + replace
    */
   findAndReplace: z.object({
