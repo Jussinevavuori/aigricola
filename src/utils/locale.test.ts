@@ -9,7 +9,7 @@ function createLocale(messages: MessagesObject) {
     name: "en-US",
     index: 0,
     filePath: "en-US.json",
-    sortKeys: "alphabetically",
+    format: { sort: "alphabetically", indent: "2" },
   });
 }
 
@@ -147,7 +147,7 @@ describe("save", () => {
       name: "en-US",
       index: 0,
       filePath: "en-US.json",
-      sortKeys: "alphabetically",
+      format: { sort: "alphabetically", indent: "2" },
     });
     await locale.save();
     expect(writeMock).toHaveBeenCalledTimes(1);
@@ -168,7 +168,7 @@ describe("save", () => {
       name: "en-US",
       index: 0,
       filePath: "en-US.json",
-      sortKeys: "alphabetically",
+      format: { sort: "alphabetically", indent: "2" },
     });
     await locale.save();
     expect(writeMock).toHaveBeenCalledTimes(1);
@@ -206,7 +206,7 @@ describe("save", () => {
       name: "en-US",
       index: 0,
       filePath: "en-US.json",
-      sortKeys: "preserve-order-and-append",
+      format: { sort: "preserve-order-and-append", indent: "2" },
     });
     locale.setMessage("aaa", "AAA");
     locale.setMessage("user.name", "Charlie");
@@ -250,8 +250,7 @@ describe("save with different indent settings", () => {
       name: "en-US",
       index: 0,
       filePath: "en-US.json",
-      sortKeys: "alphabetically",
-      indent: "2",
+      format: { sort: "alphabetically", indent: "2" },
     });
     await locale.save();
     expect(writeMock).toHaveBeenCalledWith(
@@ -273,8 +272,7 @@ describe("save with different indent settings", () => {
       name: "en-US",
       index: 0,
       filePath: "en-US.json",
-      sortKeys: "alphabetically",
-      indent: "tab",
+      format: { sort: "alphabetically", indent: "tab" },
     });
     await locale.save();
     expect(writeMock).toHaveBeenCalledWith(
@@ -296,8 +294,7 @@ describe("save with different indent settings", () => {
       name: "en-US",
       index: 0,
       filePath: "en-US.json",
-      sortKeys: "alphabetically",
-      indent: "4",
+      format: { sort: "alphabetically", indent: "4" },
     });
     await locale.save();
     expect(writeMock).toHaveBeenCalledWith(

@@ -54,14 +54,9 @@ export class Locale {
   private initialData: MessagesObject;
 
   /**
-   * Key sorting algorithm.
+   * JSON formatting options.
    */
-  private sortKeys: Config["sortKeys"];
-
-  /**
-   * Indent
-   */
-  private indent: Config["indent"] = "2";
+  private format: Config["format"];
 
   /**
    * Constructors
@@ -72,16 +67,14 @@ export class Locale {
     name: string;
     index: number;
     filePath: string;
-    sortKeys?: Config["sortKeys"];
-    indent?: Config["indent"];
+    format?: Config["format"];
   }) {
     // Save data
     this.file = options.file;
     this.name = options.name;
     this.index = options.index;
     this.filePath = options.filePath;
-    this.sortKeys = options.sortKeys || "alphabetically";
-    this.indent = options.indent || "2";
+    this.format = options.format ?? { indent: "2", sort: "alphabetically" };
 
     // Deflate messages into a flat object
     this.data = Locale.deflate(options.messages);
@@ -113,7 +106,7 @@ export class Locale {
    * Implement key sorting algorithm
    */
   private compareKeys<T extends { key: string; path: string; value: unknown }>(a: T, b: T): number {
-    switch (this.sortKeys) {
+    switch (this.format.sort) {
       case "alphabetically": {
         return a.key.localeCompare(b.key);
       }
@@ -138,7 +131,7 @@ export class Locale {
    * Get the formatting indentation space based on the indent setting.
    */
   private getSpace() {
-    switch (this.indent) {
+    switch (this.format.indent) {
       case "tab":
         return "\t";
       case "2":
@@ -149,16 +142,20 @@ export class Locale {
   }
 
   /**
-   * Update self with updated messages.
+   * Utility to get formatted JSON string with indentation.
    */
-  async save() {
-    const messages = Locale.inflate(this.data);
-    const fileContents = JsonStringify(messages, {
+  private getFormattedJsonString() {
+    return JsonStringify(Locale.inflate(this.data), {
       space: this.getSpace(),
       cmp: this.compareKeys.bind(this),
     });
-    if (!fileContents) throw new Error("Failed to stringify messages");
-    await this.file.write(fileContents);
+  }
+
+  /**
+   * Update self with updated messages.
+   */
+  async save() {
+    await this.file.write(this.getFormattedJsonString());
   }
 
   /**

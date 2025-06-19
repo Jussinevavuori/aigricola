@@ -22,7 +22,7 @@ export async function getLocaleFile(filePath: string) {
     name,
     index,
     filePath,
-    sortKeys: config.sortKeys,
+    format: config.format,
   });
 }
 

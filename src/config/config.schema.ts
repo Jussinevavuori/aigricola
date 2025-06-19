@@ -20,22 +20,32 @@ export const ConfigSchema = z.object({
     .nonempty("At least one locale is required."),
 
   /**
-   * Key sorting
-   *
-   * - alphabetically:             Keys are always sorted alphabetically.
-   * - preserve-order-and-append:  The initial order of the keys is preserved, and new keys are
-   *                               appended at the end of each namespace.
+   * All JSON formatting options.
    */
-  sortKeys: z.enum(["alphabetically", "preserve-order-and-append"]).default("alphabetically"),
+  format: z
+    .object({
+      /**
+       * Key sorting
+       *
+       * - alphabetically:             Keys are always sorted alphabetically.
+       * - preserve-order-and-append:  The initial order of the keys is preserved, and new keys are
+       *                               appended at the end of each namespace.
+       */
+      sort: z.enum(["alphabetically", "preserve-order-and-append"]).default("alphabetically"),
 
-  /**
-   * Indent for formatting JSON files.
-   *
-   * - `tab`: Use tab characters for indentation.
-   * - `2`:   Use 2 spaces for indentation.
-   * - `4`:   Use 4 spaces for indentation.
-   */
-  indent: z.enum(["tab", "2", "4"]).default("2"),
+      /**
+       * Indent for formatting JSON files.
+       *
+       * - `tab`: Use tab characters for indentation.
+       * - `2`:   Use 2 spaces for indentation.
+       * - `4`:   Use 4 spaces for indentation.
+       */
+      indent: z.enum(["tab", "2", "4"]).default("2"),
+    })
+    .default({
+      sort: "alphabetically",
+      indent: "2",
+    }),
 
   /**
    * Find + replace
