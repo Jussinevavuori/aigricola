@@ -59,6 +59,11 @@ export class Locale {
   private sortKeys: Config["sortKeys"];
 
   /**
+   * Indent
+   */
+  private indent: Config["indent"] = "2";
+
+  /**
    * Constructors
    */
   constructor(options: {
@@ -67,14 +72,16 @@ export class Locale {
     name: string;
     index: number;
     filePath: string;
-    sortKeys: Config["sortKeys"];
+    sortKeys?: Config["sortKeys"];
+    indent?: Config["indent"];
   }) {
     // Save data
     this.file = options.file;
     this.name = options.name;
     this.index = options.index;
     this.filePath = options.filePath;
-    this.sortKeys = options.sortKeys;
+    this.sortKeys = options.sortKeys || "alphabetically";
+    this.indent = options.indent || "2";
 
     // Deflate messages into a flat object
     this.data = Locale.deflate(options.messages);
@@ -128,11 +135,28 @@ export class Locale {
   }
 
   /**
+   * Get the formatting indentation space based on the indent setting.
+   */
+  private getSpace() {
+    switch (this.indent) {
+      case "tab":
+        return "\t";
+      case "2":
+        return " ".repeat(2);
+      case "4":
+        return " ".repeat(4);
+    }
+  }
+
+  /**
    * Update self with updated messages.
    */
   async save() {
     const messages = Locale.inflate(this.data);
-    const fileContents = JsonStringify(messages, { space: 2, cmp: this.compareKeys.bind(this) });
+    const fileContents = JsonStringify(messages, {
+      space: this.getSpace(),
+      cmp: this.compareKeys.bind(this),
+    });
     if (!fileContents) throw new Error("Failed to stringify messages");
     await this.file.write(fileContents);
   }

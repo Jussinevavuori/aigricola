@@ -235,3 +235,78 @@ describe("save", () => {
     expect(writeMock).toHaveBeenCalledWith(expectedJsonString);
   });
 });
+
+describe("save with different indent settings", () => {
+  function makeMessages(): MessagesObject {
+    return { a: "1", b: { c: "2" } };
+  }
+
+  it("writes with 2 spaces indent", async () => {
+    const messages = makeMessages();
+    const writeMock = jest.fn(async () => void 0);
+    const locale = new Locale({
+      file: { write: writeMock },
+      messages,
+      name: "en-US",
+      index: 0,
+      filePath: "en-US.json",
+      sortKeys: "alphabetically",
+      indent: "2",
+    });
+    await locale.save();
+    expect(writeMock).toHaveBeenCalledWith(
+      `{
+  "a": "1",
+  "b": {
+    "c": "2"
+  }
+}`
+    );
+  });
+
+  it("writes with tab indent", async () => {
+    const messages = makeMessages();
+    const writeMock = jest.fn(async () => void 0);
+    const locale = new Locale({
+      file: { write: writeMock },
+      messages,
+      name: "en-US",
+      index: 0,
+      filePath: "en-US.json",
+      sortKeys: "alphabetically",
+      indent: "tab",
+    });
+    await locale.save();
+    expect(writeMock).toHaveBeenCalledWith(
+      `{
+\t"a": "1",
+\t"b": {
+\t\t"c": "2"
+\t}
+}`
+    );
+  });
+
+  it("writes with 4 spaces indent", async () => {
+    const messages = makeMessages();
+    const writeMock = jest.fn(async () => void 0);
+    const locale = new Locale({
+      file: { write: writeMock },
+      messages,
+      name: "en-US",
+      index: 0,
+      filePath: "en-US.json",
+      sortKeys: "alphabetically",
+      indent: "4",
+    });
+    await locale.save();
+    expect(writeMock).toHaveBeenCalledWith(
+      `{
+    "a": "1",
+    "b": {
+        "c": "2"
+    }
+}`
+    );
+  });
+});

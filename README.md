@@ -79,6 +79,7 @@ When more control is required, see this example.
 | ------------------------- | ------------------------------------- | --------------------------------------------------------- |
 | `locales`                 | List of locale files [0]              | **Required**                                              |
 | `sortKeys`                | How to sort keys in translation files | `alphabetically` (default) or `preserve-order-and-append` |
+| `indent`                  | JSON formatting indent option         | `2` (default), `4`, or `tab`                              |
 | `findAndReplace.enabled`  | Enable/disable find & replace         | **Required**                                              |
 | `findAndReplace.baseDir`  | Directory to search                   | `.`                                                       |
 | `findAndReplace.include`  | Glob patterns to include              | All `.ts(x)` and `.js(x)` files.                          |

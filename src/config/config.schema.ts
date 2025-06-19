@@ -29,6 +29,15 @@ export const ConfigSchema = z.object({
   sortKeys: z.enum(["alphabetically", "preserve-order-and-append"]).default("alphabetically"),
 
   /**
+   * Indent for formatting JSON files.
+   *
+   * - `tab`: Use tab characters for indentation.
+   * - `2`:   Use 2 spaces for indentation.
+   * - `4`:   Use 4 spaces for indentation.
+   */
+  indent: z.enum(["tab", "2", "4"]).default("2"),
+
+  /**
    * Find + replace
    */
   findAndReplace: z.object({
