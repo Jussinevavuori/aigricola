@@ -71,7 +71,7 @@ export function register_renameLocalizationKeysTool(server: McpServer) {
             baseDir: fnr.baseDir,
             exclude: fnr.exclude,
             include: fnr.include,
-            find: new RegExp(fnr.keyRegex.replace("__TRANSLATION_KEY__", oldKey)),
+            find: new RegExp(fnr.keyRegex.replace("__TRANSLATION_KEY__", oldKey), "gm"),
             replaceWith: { key: newKey },
           });
         }

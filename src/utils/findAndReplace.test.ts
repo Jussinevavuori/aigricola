@@ -42,6 +42,26 @@ describe("findAndReplaceText", () => {
     });
     expect(result).toContain("HI EARTH!");
   });
+
+  it("replaces ALL occurrences of a string", () => {
+    const content = "foo bar foo baz foo";
+    const result = findAndReplaceText({
+      content,
+      find: "foo",
+      replaceWith: "qux",
+    });
+    expect(result).toBe("qux bar qux baz qux");
+  });
+
+  it("replaces ALL occurrences of a regex", () => {
+    const content = "one two one two one";
+    const result = findAndReplaceText({
+      content,
+      find: /one/g,
+      replaceWith: "1",
+    });
+    expect(result).toBe("1 two 1 two 1");
+  });
 });
 
 describe("findAndReplaceText for translations", () => {
