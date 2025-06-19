@@ -4,6 +4,7 @@ import { register_addLocalizationsTool } from "../tools/addLocalizations.tool";
 import { register_copyLocalizationsTool } from "../tools/copyLocalizations.tool";
 import { register_findDuplicateValuesTool } from "../tools/findDuplicateValues.tool";
 import { register_listLocalesTools } from "../tools/listLocales.tool";
+import { register_listLocalizationKeysTool } from "../tools/listLocalizationKeys";
 import { register_listLocalizationsTool } from "../tools/listLocalizations.tool";
 import { register_removeLocalizationsTool } from "../tools/removeLocalizations.tool";
 import { register_renameLocalizationKeysTool } from "../tools/renameLocalizationKeys.tool";
@@ -39,6 +40,7 @@ export function getMcpServer() {
   register_updateLocalizationsTool(server);
   register_findDuplicateValuesTool(server);
   register_removeLocalizationsTool(server);
+  register_listLocalizationKeysTool(server);
   register_validateLocalizationsTool(server);
   register_renameLocalizationKeysTool(server);
 
