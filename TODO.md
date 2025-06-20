@@ -1,0 +1,1 @@
+- Add config option for excluding namespaces from duplicate search
